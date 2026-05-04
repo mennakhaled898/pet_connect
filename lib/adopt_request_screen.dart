@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'main.dart';
 
 class AdoptRequestScreen extends StatefulWidget {
   final String petId;
@@ -26,16 +27,7 @@ class _AdoptRequestScreenState extends State<AdoptRequestScreen> {
   void _submitRequest() async {
     if (_reasonController.text.trim().isEmpty ||
         _phoneController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("Please fill in all fields"),
-          backgroundColor: const Color(0xFFE57373),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-        ),
-      );
+      PetNotification.show(context, "Please fill in all fields", true);
       return;
     }
 
@@ -58,27 +50,16 @@ class _AdoptRequestScreenState extends State<AdoptRequestScreen> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Application submitted successfully!"),
-            backgroundColor: const Color(0xFF7CB6A5),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
-            ),
-          ),
+        PetNotification.show(
+          context,
+          "Application submitted successfully!",
+          false,
         );
         Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Error: ${e.toString()}"),
-            backgroundColor: const Color(0xFFE57373),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        PetNotification.show(context, "Error: ${e.toString()}", true);
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);

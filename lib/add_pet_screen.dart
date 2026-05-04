@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'main.dart';
 
 class AddPetScreen extends StatefulWidget {
   const AddPetScreen({super.key});
@@ -26,16 +27,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
     if (user == null) return;
 
     if (_name.text.isEmpty || _breed.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text("Please fill in name and breed"),
-          backgroundColor: const Color(0xFFE57373),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-        ),
-      );
+      PetNotification.show(context, "Please fill in name and breed", true);
       return;
     }
 
